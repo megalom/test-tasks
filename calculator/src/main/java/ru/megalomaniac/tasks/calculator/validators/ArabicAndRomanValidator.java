@@ -36,7 +36,7 @@ public class ArabicAndRomanValidator implements NumberValidator {
     private boolean isArabicNumbers(String input){
         boolean result = true;
 
-        Pattern patternMatch = Pattern.compile("[0-9]+[-+/*][0-9]+");
+        Pattern patternMatch = Pattern.compile("[0-9]+\\s*[-+/*]\\s*[0-9]+");
         Matcher matcher = patternMatch.matcher(input);
         if(!matcher.matches())
             result = false;
@@ -48,7 +48,7 @@ public class ArabicAndRomanValidator implements NumberValidator {
     private boolean isRomanNumbers(String input){
         boolean result = true;
 
-        Pattern patternMatch = Pattern.compile("[XIV]+[+-.*][XIV]+");
+        Pattern patternMatch = Pattern.compile("[XIV]+\\s*[-+/*]\\s*[XIV]+");
         Matcher matcher = patternMatch.matcher(input);
         if(!matcher.matches())
             result = false;

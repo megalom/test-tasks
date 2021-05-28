@@ -1,0 +1,12 @@
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\Calculator.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\Application.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\extractors\ArabicOperandsExtractor.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\converters\ArabicNumberConverter.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\converters\RomanNumberConverter.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\types\OperationType.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\types\NumberType.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\validators\NumberValidator.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\validators\ArabicAndRomanValidator.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\converters\NumberConverter.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\extractors\OperandsExtractor.java
+D:\Work\programming\Java\projects\test-tasks\calculator\src\main\java\ru\megalomaniac\tasks\calculator\extractors\RomanOperandsExtractor.java
