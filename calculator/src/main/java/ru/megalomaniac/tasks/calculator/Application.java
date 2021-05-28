@@ -8,8 +8,9 @@ public class Application {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите пожалуйста операцию:");
         String input = scanner.nextLine();
-        System.out.println("Результат вычисления: "+Calculator.calculateFromString(input));
         scanner.close();
+        System.out.println("Результат вычисления: "+Calculator.calculateFromString(input));
+
 
     }
 }
