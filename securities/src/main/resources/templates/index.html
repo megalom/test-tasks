@@ -5,6 +5,9 @@
     <title>Информация о ценных бумагах и торгах.</title>
 </head>
 <body>
-    <p th:text="'Время на сервере '+ ${theDate}"/><br>
+    <p th:text="'Время на сервере '+ ${theDate}"/><br/>
+    <a href="/securities">Информация о ценных бумагах</a><br/>
+    <a href="/history">История торгов за произвольную дату</a><br/>
+    <a href="/import">Импорт информации из xml файла</a><br/>
 </body>
 </html>

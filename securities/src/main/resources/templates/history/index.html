@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>История торгов.</title>
+</head>
+<body>
+
+    <div class="container">
+        <h2>История торгов за произвольную дату.</h2>
+        <hr>
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>secid</th>
+                <th>regnumber</th>
+                <th>numtrades</th>
+                <th>open</th>
+                <th>close</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="history:${tradingHistories}">
+                <td th:text="${history.id}"/>
+                <td th:text="${history.secId}"/>
+                <td th:text="${history.tradeDate}"/>
+                <td th:text="${history.numtrades}"/>
+                <td th:text="${history.open}"/>
+                <td th:text="${history.close}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

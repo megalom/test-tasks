@@ -1,27 +1,32 @@
+DROP TABLE IF EXISTS trading_history;
 DROP TABLE IF EXISTS securities_info;
-DROP TABLE IF EXISTS securities_history;
+
 
 CREATE TABLE securities_info (
   id INT AUTO_INCREMENT  PRIMARY KEY,
-  secid INT,
-  regnumber INT,
-  name VARCHAR(250),
-  emitent_title VARCHAR(250)
+  secid VARCHAR(36) NOT NULL,
+  regnumber VARCHAR(189) NOT NULL,
+  name VARCHAR(765) NOT NULL,
+  emitent_title VARCHAR(765) NOT NULL
 );
 
-CREATE TABLE securities_history (
-  secid INT AUTO_INCREMENT  PRIMARY KEY,
-  tradedate DATE,
-  numtrades INT,
-  open BOOLEAN
+CREATE TABLE trading_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  secid VARCHAR(36) NOT NULL,
+  tradedate DATE NOT NULL,
+  numtrades DOUBLE NOT NULL,
+  open DOUBLE NOT NULL,
+  close DOUBLE NOT NULL
 );
+
+
 
 INSERT INTO securities_info (secid, regnumber, name,emitent_title) VALUES
-    (1,911,"One","WB"),
-    (2,822,"Two","Disney"),
-    (3,722,"Three","Marvel");
+    ('AAPL','911','One','WB'),
+    ('BOPD','822','Two','Disney'),
+    ('KTYL','722','Three','Marvel');
 
-INSERT INTO securities_history (secid,tradedate,numtrades,open) VALUES
-    (1, "2021.01.23", 3,TRUE),
-    (2, "2021.02.28", 1,FALSE),
-    (3, "2021.03.13", 4,FALSE);
+INSERT INTO trading_history (secid,tradedate,numtrades,open,close) VALUES
+    ('AAPL', '2021-03-21', 3,0.0,1.0),
+    ('BOPD', '2021-02-28', 1,2.0,3.0),
+    ('KTYL', '2021-04-13', 4,4.0,5.0);

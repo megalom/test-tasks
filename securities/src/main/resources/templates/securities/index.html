@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о ценных бумагах.</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Информация о ценных бумагах.</h2>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>secid</th>
+                    <th>regnumber</th>
+                    <th>name</th>
+                    <th>emitent_title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="securities:${securitiesInfos}">
+                    <td th:text="${securities.id}"/>
+                    <td th:text="${securities.secId}"/>
+                    <td th:text="${securities.regNumber}"/>
+                    <td th:text="${securities.name}"/>
+                    <td th:text="${securities.emitentTitle}"/>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
