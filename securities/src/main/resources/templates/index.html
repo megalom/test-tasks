@@ -6,8 +6,8 @@
 </head>
 <body>
     <p th:text="'Время на сервере '+ ${theDate}"/><br/>
-    <a href="/securities">Информация о ценных бумагах</a><br/>
-    <a href="/history">История торгов за произвольную дату</a><br/>
-    <a href="/import">Импорт информации из xml файла</a><br/>
+    <a th:href="@{/securities}">Информация о ценных бумагах</a><br/>
+    <a th:href="@{/history}">История торгов за произвольную дату</a><br/>
+    <a th:href="@{/upload}">Импорт информации из xml файла</a><br/>
 </body>
 </html>

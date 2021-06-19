@@ -41,7 +41,6 @@ public class SAXHandler extends DefaultHandler {
         switch (qName) {
             // определение типа загружаеммых данных из тега <data id="">
             case "data":
-                System.out.println("Find data tag, id =" + attributes.getValue("id"));
                 // выбор типа данных из атрибута id
                 switch (attributes.getValue("id")) {
                     case "securities":
@@ -76,13 +75,13 @@ public class SAXHandler extends DefaultHandler {
 
     private SecuritiesInfo getSecurities(Attributes attributes){
         SecuritiesInfo result = new SecuritiesInfo();
-        securitiesInfo.setId(getLong(
+        result.setId(getLong(
                 attributes.getValue("id"),"id",locator.getLineNumber()
         ));
-        securitiesInfo.setSecId(attributes.getValue("secid"));
-        securitiesInfo.setName(attributes.getValue("name"));
-        securitiesInfo.setRegNumber(attributes.getValue("regnumber"));
-        securitiesInfo.setEmitentTitle(attributes.getValue("emitent_title"));
+        result.setSecId(attributes.getValue("secid"));
+        result.setName(attributes.getValue("name"));
+        result.setRegNumber(attributes.getValue("regnumber"));
+        result.setEmitentTitle(attributes.getValue("emitent_title"));
         return result;
     }
 
