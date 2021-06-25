@@ -2,7 +2,6 @@ package ru.megalomaniac.securities.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.model.TradingHistory;
 import ru.megalomaniac.securities.repository.TradingHistoryRepository;
 
@@ -12,7 +11,7 @@ import java.util.Optional;
 @Service
 public class TradingHistoryServiceImpl implements TradingHistoryService{
     @Autowired
-    TradingHistoryRepository tradingHistoryRepository;
+    private TradingHistoryRepository tradingHistoryRepository;
 
     @Override
     public List<TradingHistory> findAll() {
@@ -20,7 +19,7 @@ public class TradingHistoryServiceImpl implements TradingHistoryService{
     }
 
     @Override
-    public TradingHistory findById(long id) {
+    public TradingHistory findById(int id) {
         Optional<TradingHistory> result = tradingHistoryRepository.findById(id);
         TradingHistory tradingHistory = null;
         if(result.isPresent()){
@@ -38,7 +37,7 @@ public class TradingHistoryServiceImpl implements TradingHistoryService{
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(int id) {
         tradingHistoryRepository.deleteById(id);
     }
 }

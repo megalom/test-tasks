@@ -2,6 +2,7 @@ package ru.megalomaniac.securities.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.repository.SecuritiesInfoRepository;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class SecuritiesInfoServiceImpl implements SecuritiesInfoService{
 
     @Autowired
-    SecuritiesInfoRepository securitiesInfoRepository;
+    private SecuritiesInfoRepository securitiesInfoRepository;
 
     @Override
     public List<SecuritiesInfo> findAll() {
@@ -20,7 +21,7 @@ public class SecuritiesInfoServiceImpl implements SecuritiesInfoService{
     }
 
     @Override
-    public SecuritiesInfo findById(long id) {
+    public SecuritiesInfo findById(int id) {
         Optional<SecuritiesInfo> result = securitiesInfoRepository.findById(id);
         SecuritiesInfo securitiesInfo = null;
         if(result.isPresent()){
@@ -38,7 +39,19 @@ public class SecuritiesInfoServiceImpl implements SecuritiesInfoService{
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(int id) {
         securitiesInfoRepository.deleteById(id);
     }
+
+    @Override
+    public Boolean existsBySecid(String secid) {
+        return securitiesInfoRepository.existsBySecid(secid);
+    }
+
+    @Override
+    public SecuritiesInfo findBySecid(String secid) {
+        return securitiesInfoRepository.findBySecid(secid);
+    }
+
+
 }

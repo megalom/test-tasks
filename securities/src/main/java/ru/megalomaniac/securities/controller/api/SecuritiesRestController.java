@@ -24,8 +24,8 @@ public class SecuritiesRestController {
         return securitiesInfoService.findAll();
     }
 
-    @GetMapping(value = "/securities/{id}",produces= MediaType.APPLICATION_XML_VALUE)
-    public String findAll(@PathVariable(name="id") long id){
+    /*@GetMapping(value = "/securities/{id}",produces= MediaType.APPLICATION_XML_VALUE)
+    public String findAll(@PathVariable(name="id") int id){
         XmlMapper xmlMapper = new XmlMapper();
         String xml = "";
         try {
@@ -34,5 +34,5 @@ public class SecuritiesRestController {
             e.printStackTrace();
         }
         return xml;
-    }
+    }*/
 }

@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация о ценных бумагах и торгах.</title>
+    <link rel="stylesheet" th:href="@{/css/simpleStyle.css}"/>
+    <script type = "text/javascript" th:src="@{/js/util.js}"></script>
 </head>
 <body>
-    <p th:text="'Время на сервере '+ ${theDate}"/><br/>
-    <a th:href="@{/securities}">Информация о ценных бумагах</a><br/>
-    <a th:href="@{/history}">История торгов за произвольную дату</a><br/>
-    <a th:href="@{/upload}">Импорт информации из xml файла</a><br/>
+    <h2 class="commonPageHead" th:text="'Информация о ценных бумагах и торгах.'"/>
+    <hr>
+    <a class="button" th:href="@{/securities}">Информация о ценных бумагах</a>|
+    <a class="button" th:href="@{/history}">История торгов за произвольную дату</a>|
+    <a class="button" th:href="@{/upload}">Импорт информации из xml файла</a><br/>
+    <hr>
+
 </body>
 </html>

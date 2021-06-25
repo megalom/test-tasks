@@ -3,34 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>История торгов.</title>
+    <link rel="stylesheet" th:href="@{/css/simpleStyle.css}"/>
+    <script type = "text/javascript" th:src="@{/js/util.js}"></script>
 </head>
 <body>
 
     <div class="container">
-        <h2>История торгов за произвольную дату.</h2>
+        <h2 class="commonPageHead">История торгов за произвольную дату.</h2>
         <hr>
-        <table>
+
+        <div>
+            <nobr>
+                <a class="button" th:href="@{/history/add}" th:text="'Добавить'"/> |
+                <a class="button" th:href="@{/}">Назад</a>
+            </nobr>
+        </div>
+        <hr>
+        <table id="commonTable">
             <thead>
             <tr>
-                <th>id</th>
-                <th>secid</th>
-                <th>regnumber</th>
-                <th>numtrades</th>
-                <th>open</th>
-                <th>close</th>
+                <th>ID</th>
+                <th>Торговый код</th>
+                <th>Дата операции</th>
+                <th>Количество сделок за день</th>
+                <th>Цена открытия</th>
+                <th>Цена закрытия</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="history:${tradingHistories}">
+            <tr th:each="history:${tradingHistories}"
+                th:attr="onclick=|goto('@{/history/{id}(id=${history.id})}')|">
                 <td th:text="${history.id}"/>
-                <td th:text="${history.secId}"/>
-                <td th:text="${history.tradeDate}"/>
+                <td th:text="${history.secid}"/>
+                <td th:text="${history.tradedate}"/>
                 <td th:text="${history.numtrades}"/>
                 <td th:text="${history.open}"/>
                 <td th:text="${history.close}"/>
             </tr>
             </tbody>
         </table>
+
     </div>
 </body>
 </html>

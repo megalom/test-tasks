@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TradingHistoryService {
     public List<TradingHistory> findAll();
-    public TradingHistory findById(long id);
+    public TradingHistory findById(int id);
     public void save(TradingHistory tradingHistory);
-    public void deleteById(long id);
+    public void deleteById(int id);
 }

@@ -1,6 +1,5 @@
 package ru.megalomaniac.securities.xml;
 
-import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -8,7 +7,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.model.TradingHistory;
 
-import javax.xml.crypto.Data;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,12 +73,12 @@ public class SAXHandler extends DefaultHandler {
 
     private SecuritiesInfo getSecurities(Attributes attributes){
         SecuritiesInfo result = new SecuritiesInfo();
-        result.setId(getLong(
+        result.setId(getInteger(
                 attributes.getValue("id"),"id",locator.getLineNumber()
         ));
-        result.setSecId(attributes.getValue("secid"));
+        result.setSecid(attributes.getValue("secid"));
         result.setName(attributes.getValue("name"));
-        result.setRegNumber(attributes.getValue("regnumber"));
+        result.setRegnumber(attributes.getValue("regnumber"));
         result.setEmitentTitle(attributes.getValue("emitent_title"));
         return result;
     }
@@ -88,13 +86,14 @@ public class SAXHandler extends DefaultHandler {
     private TradingHistory getTradingHistory(Attributes attributes) {
         TradingHistory result = new TradingHistory();
         result.setId(0);
-        result.setSecId(attributes.getValue("SECID"));
+
+        result.setSecid(attributes.getValue("SECID"));
 
         result.setNumtrades(getDouble(
                 attributes.getValue("NUMTRADES"), "NUMTRADES", locator.getLineNumber()
         ));
 
-        result.setTradeDate(getDate(
+        result.setTradedate(getDate(
                 attributes.getValue("TRADEDATE"),"TRADEDATE", locator.getLineNumber()
         ));
 
@@ -153,10 +152,10 @@ public class SAXHandler extends DefaultHandler {
     }
 
     // Приведение типов с проверкой строки и запись ошибок в errors
-    private Long getLong(String str, String attributeName, int lineNumber) {
-        Long result = 0L;
+    private Integer getInteger(String str, String attributeName, int lineNumber) {
+        Integer result = 0;
         if (str.matches("\\d+"))
-            result = Long.parseLong(str);
+            result = Integer.parseInt(str);
         else
             errors.add(
                     new StringBuilder().append("unexpected value: ").append(str).append(" for attribute ")
