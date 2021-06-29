@@ -40,4 +40,14 @@ public class TradingHistoryServiceImpl implements TradingHistoryService{
     public void deleteById(int id) {
         tradingHistoryRepository.deleteById(id);
     }
+
+    @Override
+    public List<TradingHistory> findAllFromPage(int limit,int offset) {
+        return tradingHistoryRepository.findAllFromPage(limit,offset);
+    }
+
+    @Override
+    public long getCount() {
+        return tradingHistoryRepository.count();
+    }
 }

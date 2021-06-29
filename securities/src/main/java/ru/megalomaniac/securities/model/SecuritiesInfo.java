@@ -22,27 +22,27 @@ public class SecuritiesInfo implements Serializable {
 
     // Торговый код
     @Column(name = "secid")
-    @NotBlank(message = "Поле не должно быть пустым")
-    @Pattern(regexp = "[a-zA-Z0-9]{4,18}",message = "От 4 до 18 символов")
+    @NotBlank(message = "{TradingHistory.secid.notblank}")
+    @Pattern(regexp = "[a-zA-Z0-9]{4,18}",message = "{TradingHistory.secid.pattern}")
     private String secid;
 
     // Регистрационный номер
     @Column(name = "regnumber")
     @Pattern(regexp = "\\d-\\d{2}-\\d{5}-[A-Z]",
-            message = "Должно содержать значение вида 1-11-11111-A")
+            message = "{SecuritiesInfo.regnumber.pattern}")
     private String regnumber;
 
     // Наименование ценной бумаги
     @Column(name = "name")
     @Pattern(regexp = "[\"-?!,.а-яА-ЯёЁ0-9\\sa-zA-Z()]{3,}",
-            message = "Не менее 3х символов.")
+            message = "{SecuritiesInfo.name.pattern}")
     private String name;
 
     // Полное фирменное наименование/наименование эмитента, управляющей компании,
     // управляющего ипотечным покрытием
     @Column(name = "emitent_title")
     @Pattern(regexp = "[\"-?!,.а-яА-ЯёЁ0-9\\sa-zA-Z()]{3,}",
-            message = "Не менее 3х символов.")
+            message = "{SecuritiesInfo.emitentTitle.pattern}")
     private String emitentTitle;
 
     @OneToMany(

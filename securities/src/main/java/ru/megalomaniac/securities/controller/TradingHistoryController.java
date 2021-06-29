@@ -1,19 +1,19 @@
 package ru.megalomaniac.securities.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.model.TradingHistory;
 import ru.megalomaniac.securities.service.SecuritiesInfoService;
 import ru.megalomaniac.securities.service.TradingHistoryService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/history")
@@ -23,6 +23,9 @@ public class TradingHistoryController {
     TradingHistoryService tradingHistoryService;
     @Autowired
     SecuritiesInfoService securitiesInfoService;
+
+    @Autowired
+    MessageSource messageSource;
 
     @GetMapping()
     public String index(Model model){
@@ -53,7 +56,7 @@ public class TradingHistoryController {
             bindingResult.addError(new FieldError(
                     bindingResult.getObjectName(),
                     "secid",
-                    "{TradingHistory.secid.notexists}"));
+                    messageSource.getMessage("TradingHistory.secid.notexists",null,Locale.getDefault())));
         if(bindingResult.hasErrors()) {
             model.addAttribute("add",true);
             return "/history/add";

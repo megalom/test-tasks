@@ -83,8 +83,11 @@ public class SecuritiesXmlImport extends DefaultHandler{
                 else {
                     System.out.println("not found " + tHistory.getSecid()+" loading from moex.");
                     SecuritiesInfo secFromMoex = loadFromMoex(tHistory.getSecid());
-                    if(secFromMoex!=null)
-                        System.out.println("found on moex securities - "+secFromMoex.getSecid());
+                    if(secFromMoex!=null) {
+                        System.out.println("found on moex securities - " + secFromMoex.getSecid());
+                        securitiesInfoService.save(secFromMoex);
+                        tradingHistoryService.save(tHistory);
+                    }
                     else
                         System.out.println("securities "+tHistory.getSecid()+" not found on moex.");
                 }
@@ -120,6 +123,7 @@ public class SecuritiesXmlImport extends DefaultHandler{
 
 
         List<SecuritiesInfo> securities=new ArrayList<>();
+        if(response!=null)
         if(response.getStatusCode().equals(HttpStatus.OK)) {
             try(InputStream is = new ByteArrayInputStream(response.getBody().getBytes(StandardCharsets.UTF_8))) {
                 SAXParser parser = parserFactory.newSAXParser();

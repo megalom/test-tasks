@@ -16,7 +16,7 @@
         <form th:method="POST"
               th:action="${add} ? @{/history} : @{/history/{id}/edit(id=${tradingHistory.id})}"
               th:object="${tradingHistory}"
-                th:attr="onsubmit=|return validateHistoryForm()|">
+              th:attr="onsubmit=|return validateHistoryForm()|">
 
             <input type="hidden" th:field="*{id}"/>
             <input type="hidden" th:field="*{securitiesInfo}"/>
