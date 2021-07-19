@@ -23,9 +23,9 @@ CREATE TABLE trading_history (
 
 
 INSERT INTO securities_info (secid, regnumber, name,emitent_title) VALUES
-    ('AAPL','911','One','WB'),
-    ('BOPD','822','Two','Disney'),
-    ('KTYL','722','Three','Marvel');
+    ('AAPL','1-11-11111-A','Warner','WB'),
+    ('BOPD','2-11-11111-A','Walt','Disney'),
+    ('KTYL','3-11-11111-A','Stan','Marvel');
 
 INSERT INTO trading_history (secid,tradedate,numtrades,open,close) VALUES
     ('AAPL', '2021-03-21', 3.0, 0.0, 1.0),

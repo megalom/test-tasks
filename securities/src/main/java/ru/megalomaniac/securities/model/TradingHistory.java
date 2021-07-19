@@ -1,5 +1,8 @@
 package ru.megalomaniac.securities.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -12,38 +15,45 @@ public class TradingHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JacksonXmlProperty(isAttribute = true)
     private int id;
 
     // Торговый код
     @Column(name = "secid")
     @NotBlank(message = "{TradingHistory.secid.notblank}")
     @Pattern(regexp = "[a-zA-Z0-9]{4,18}",message = "{TradingHistory.secid.pattern}")
+    @JacksonXmlProperty(isAttribute = true)
     private String secid;
 
     // Дата торгов
     @Column(name = "tradedate")
     @NotNull(message = "{TradingHistory.tradedate.notempty}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JacksonXmlProperty(isAttribute = true)
     private Date tradedate;
 
     // Количество сделок за день
     @Column(name = "numtrades")
     @DecimalMin(value = "0",message = "{TradingHistory.numtrades.min}")
-    //@Pattern( regexp = "[0-9]+", message = "Поле должно содержать целые числа.")
+    @JacksonXmlProperty(isAttribute = true)
     private double numtrades;
 
     // Цена предторгового периода/Цена аукциона открытия
     @Column(name = "open")
     @DecimalMin(value = "0",message = "{TradingHistory.open.min}")
+    @JacksonXmlProperty(isAttribute = true)
     private double open;
 
     // Цена закрытия
     @Column(name = "close")
     @DecimalMin(value = "0",message = "{TradingHistory.close.min}")
+    @JacksonXmlProperty(isAttribute = true)
     private double close;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="secid", referencedColumnName = "secid",nullable = false,insertable = false,updatable = false)
+    @JsonIgnore
     SecuritiesInfo securitiesInfo;
 
     public TradingHistory() {

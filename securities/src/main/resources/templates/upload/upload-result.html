@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<a th:href="@{/}">Назад</a>
+
 <th:block th:if="${isSuccessful}">
     <p th:text="'Загружено успешно.'"/><br>
     <p th:text="'Всего загружено записей: ' + ${recordsCount}"/><br/>
@@ -18,6 +20,6 @@
 </th:block>
 
 
-<a th:href="@{/}">Назад</a>
+
 </body>
 </html>

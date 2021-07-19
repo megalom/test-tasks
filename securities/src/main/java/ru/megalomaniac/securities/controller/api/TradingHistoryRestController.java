@@ -6,16 +6,22 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.megalomaniac.securities.exceptions.SecuritiesNotFoundException;
-import ru.megalomaniac.securities.model.SecuritiesInfo;
-import ru.megalomaniac.securities.model.SecuritiesInfoXmlString;
-import ru.megalomaniac.securities.xml.securitiesdocument.*;
+import ru.megalomaniac.securities.model.TradingHistory;
+import ru.megalomaniac.securities.model.TradingHistoryXmlString;
 import ru.megalomaniac.securities.service.SecuritiesInfoService;
+import ru.megalomaniac.securities.service.TradingHistoryService;
+import ru.megalomaniac.securities.xml.securitiesdocument.XmlDocument;
+import ru.megalomaniac.securities.xml.securitiesdocument.XmlDocumentType;
+import ru.megalomaniac.securities.xml.securitiesdocument.XmlImport;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/securities")
-public class SecuritiesRestController {
+@RequestMapping("/api/history")
+public class TradingHistoryRestController {
+
+    @Autowired
+    private TradingHistoryService tradingHistoryService;
     @Autowired
     private SecuritiesInfoService securitiesInfoService;
 
@@ -25,15 +31,16 @@ public class SecuritiesRestController {
         ResponseEntity<XmlDocument> responseEntity;
 
         try {
-            List<SecuritiesInfo> securitiesInfos = securitiesInfoService.findAll();
-            if (securitiesInfos.isEmpty()) {
+            List<TradingHistory> tradingHistories = tradingHistoryService.findAll();
+            if (tradingHistories.isEmpty()) {
                 responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             else {
-                XmlDocument xmlDocument = XmlImport.getDocument(securitiesInfos, XmlDocumentType.SECURITIES);
+                XmlDocument xmlDocument = XmlImport.getDocument(tradingHistories, XmlDocumentType.HISTORY);
                 responseEntity = new ResponseEntity<>(xmlDocument, HttpStatus.OK);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -41,14 +48,14 @@ public class SecuritiesRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<SecuritiesInfoXmlString> findById(@PathVariable("id") int id) {
+    public ResponseEntity<TradingHistoryXmlString> findById(@PathVariable("id") int id) {
 
-        ResponseEntity<SecuritiesInfoXmlString> responseEntity;
+        ResponseEntity<TradingHistoryXmlString> responseEntity=null;
 
         try {
-            SecuritiesInfo securitiesInfo = securitiesInfoService.findById(id);
-            SecuritiesInfoXmlString securitiesInfoXmlString = new SecuritiesInfoXmlString(securitiesInfo);
-            responseEntity = new ResponseEntity<>(securitiesInfoXmlString, HttpStatus.OK);
+            TradingHistory tradingHistory = tradingHistoryService.findById(id);
+            TradingHistoryXmlString tradingHistoryXmlString = new TradingHistoryXmlString(tradingHistory);
+            responseEntity = new ResponseEntity<>(tradingHistoryXmlString, HttpStatus.OK);
         }
         catch (SecuritiesNotFoundException e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -61,11 +68,14 @@ public class SecuritiesRestController {
     }
 
     @PostMapping()
-    public ResponseEntity<HttpStatus> postSecurities(@RequestBody SecuritiesInfoXmlString securitiesInfoXmlString) {
+    public ResponseEntity<HttpStatus> postSecurities(@RequestBody TradingHistoryXmlString tradingHistoryXmlString) {
         try {
-            SecuritiesInfo securitiesInfo = securitiesInfoXmlString.convertToSecuritiesInfo();
-            if(!securitiesInfoService.existsBySecid(securitiesInfo.getSecid()))
-                securitiesInfoService.save(securitiesInfo);
+            TradingHistory tradingHistory = tradingHistoryXmlString.convertToTradingHistory();
+            tradingHistory.setSecuritiesInfo(securitiesInfoService.findBySecid(tradingHistory.getSecid()));
+            if(tradingHistory!=null) {
+                tradingHistory.setId(0);
+                tradingHistoryService.save(tradingHistory);
+            }
             else
                 return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -75,13 +85,11 @@ public class SecuritiesRestController {
     }
 
     @PutMapping()
-    public ResponseEntity<HttpStatus> updateSecurities(@RequestBody SecuritiesInfoXmlString securitiesInfoXmlString) {
+    public ResponseEntity<HttpStatus> updateSecurities(@RequestBody TradingHistoryXmlString tradingHistoryXmlString) {
         try {
-            SecuritiesInfo securitiesInfo = securitiesInfoXmlString.convertToSecuritiesInfo();
-            if(securitiesInfoService.existsBySecid(securitiesInfo.getSecid())&&
-                    securitiesInfoService.existById(securitiesInfo.getId())
-            )
-                securitiesInfoService.save(securitiesInfo);
+            TradingHistory tradingHistory = tradingHistoryXmlString.convertToTradingHistory();
+            if(tradingHistory!=null&&tradingHistoryService.existById(tradingHistory.getId()))
+                tradingHistoryService.save(tradingHistory);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -93,25 +101,11 @@ public class SecuritiesRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteSecurities(@PathVariable("id") int id) {
         try {
-            securitiesInfoService.deleteById(id);
+            tradingHistoryService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    /*@GetMapping(value = "/securities/{id}",produces= MediaType.APPLICATION_XML_VALUE)
-    public String findById(@PathVariable(name="id") int id){
-        XmlMapper xmlMapper = new XmlMapper();
-        String xml = "";
-        try {
-
-
-
-            xml = xmlMapper.writeValueAsString(securitiesInfoXmlString);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return xml;
-    }*/
 }

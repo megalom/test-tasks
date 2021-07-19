@@ -1,6 +1,8 @@
 package ru.megalomaniac.securities.model;
 
-import ru.megalomaniac.securities.validation.UniqueSecIdConstraint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,28 +16,33 @@ import java.util.Set;
 @Entity
 @Table(name = "securities_info")
 public class SecuritiesInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JacksonXmlProperty(isAttribute = true)
     private int id;
 
     // Торговый код
     @Column(name = "secid")
     @NotBlank(message = "{TradingHistory.secid.notblank}")
     @Pattern(regexp = "[a-zA-Z0-9]{4,18}",message = "{TradingHistory.secid.pattern}")
+    @JacksonXmlProperty(isAttribute = true)
     private String secid;
 
     // Регистрационный номер
     @Column(name = "regnumber")
     @Pattern(regexp = "\\d-\\d{2}-\\d{5}-[A-Z]",
             message = "{SecuritiesInfo.regnumber.pattern}")
+    @JacksonXmlProperty(isAttribute = true)
     private String regnumber;
 
     // Наименование ценной бумаги
     @Column(name = "name")
     @Pattern(regexp = "[\"-?!,.а-яА-ЯёЁ0-9\\sa-zA-Z()]{3,}",
             message = "{SecuritiesInfo.name.pattern}")
+    @JacksonXmlProperty(isAttribute = true)
     private String name;
 
     // Полное фирменное наименование/наименование эмитента, управляющей компании,
@@ -43,6 +50,7 @@ public class SecuritiesInfo implements Serializable {
     @Column(name = "emitent_title")
     @Pattern(regexp = "[\"-?!,.а-яА-ЯёЁ0-9\\sa-zA-Z()]{3,}",
             message = "{SecuritiesInfo.emitentTitle.pattern}")
+    @JacksonXmlProperty(isAttribute = true)
     private String emitentTitle;
 
     @OneToMany(
@@ -50,6 +58,7 @@ public class SecuritiesInfo implements Serializable {
             mappedBy = "securitiesInfo",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonIgnore
     private Set<TradingHistory> tradingHistory = new HashSet<>();
 
 

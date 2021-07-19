@@ -9,6 +9,8 @@ public interface TradingHistoryService {
     public List<TradingHistory> findAll();
     public List<TradingHistory> findAllFromPage(int limit,int offset);
     public TradingHistory findById(int id);
+    Boolean existsBySecid(String secid);
+    Boolean existById(int id);
     public void save(TradingHistory tradingHistory);
     public void deleteById(int id);
     public long getCount();

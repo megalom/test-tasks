@@ -3,9 +3,11 @@ package ru.megalomaniac.securities.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.megalomaniac.securities.exceptions.SecuritiesNotFoundException;
 import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.repository.SecuritiesInfoRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,26 +23,43 @@ public class SecuritiesInfoServiceImpl implements SecuritiesInfoService{
     }
 
     @Override
-    public SecuritiesInfo findById(int id) {
+    public SecuritiesInfo findById(int id){
         Optional<SecuritiesInfo> result = securitiesInfoRepository.findById(id);
         SecuritiesInfo securitiesInfo = null;
         if(result.isPresent()){
             securitiesInfo = result.get();
         }
         else{
-            throw new RuntimeException("securities info id "+id+" not found");
+            throw new SecuritiesNotFoundException("securities info id "+id+" not found");
         }
         return securitiesInfo;
     }
 
     @Override
+    @Transactional
     public void save(SecuritiesInfo securitiesInfo) {
-        securitiesInfoRepository.save(securitiesInfo);
+        System.out.println(securitiesInfo.getId());
+        if((securitiesInfo.getId()>0)&&(!securitiesInfoRepository.existsById(securitiesInfo.getId()))) {
+            securitiesInfoRepository.saveWithCustomId(
+                    securitiesInfo.getId(),
+                    securitiesInfo.getSecid(),
+                    securitiesInfo.getRegnumber(),
+                    securitiesInfo.getName(),
+                    securitiesInfo.getEmitentTitle()
+            );
+        }
+        else
+            securitiesInfoRepository.save(securitiesInfo);
     }
 
     @Override
     public void deleteById(int id) {
         securitiesInfoRepository.deleteById(id);
+    }
+
+    @Override
+    public Boolean existById(int id) {
+        return securitiesInfoRepository.existsById(id);
     }
 
     @Override

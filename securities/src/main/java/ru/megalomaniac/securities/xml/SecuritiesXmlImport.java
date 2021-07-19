@@ -16,6 +16,7 @@ import ru.megalomaniac.securities.model.SecuritiesInfo;
 import ru.megalomaniac.securities.model.TradingHistory;
 import ru.megalomaniac.securities.service.SecuritiesInfoService;
 import ru.megalomaniac.securities.service.TradingHistoryService;
+import ru.megalomaniac.securities.xml.SAXHandler;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -60,7 +61,6 @@ public class SecuritiesXmlImport extends DefaultHandler{
     public void saveToDb(){
         if(securitiesInfos.size()>0)
             securitiesInfos.stream().forEach((sInfo)->{
-                System.out.println(sInfo.getSecid());
                 if(!securitiesInfoService.existsBySecid(sInfo.getSecid()))
                     securitiesInfoService.save(sInfo);
                 else{
@@ -70,26 +70,21 @@ public class SecuritiesXmlImport extends DefaultHandler{
 
         if(tradingHistory.size()>0){
             tradingHistory.stream().forEach((tHistory)->{
-                //System.out.println(tHistory);
-                /*if(tHistory == null)
-                    System.out.println("thistory is null");
-                if(tHistory.getSecid() == null)
-                    System.out.println("thistory secid is null");*/
                 SecuritiesInfo sec =securitiesInfoService.findBySecid(tHistory.getSecid());
+                // Если ценная бумага существует то сохраняем историю операции
                 if(sec!=null) {
-                    System.out.println("found " + sec.getSecid());
                     tradingHistoryService.save(tHistory);
                 }
+                // Иначе попробуем отискать на московской бирже
                 else {
-                    System.out.println("not found " + tHistory.getSecid()+" loading from moex.");
                     SecuritiesInfo secFromMoex = loadFromMoex(tHistory.getSecid());
                     if(secFromMoex!=null) {
-                        System.out.println("found on moex securities - " + secFromMoex.getSecid());
                         securitiesInfoService.save(secFromMoex);
                         tradingHistoryService.save(tHistory);
                     }
-                    else
-                        System.out.println("securities "+tHistory.getSecid()+" not found on moex.");
+                    else{
+                        errors.add("Ценная бумага с кодом "+tHistory.getSecid()+"не найдена.");
+                    }
                 }
 
             });
@@ -107,13 +102,18 @@ public class SecuritiesXmlImport extends DefaultHandler{
         return securitiesInfos.size()+tradingHistory.size();
     }
 
+    // Загрузка ценной бумаги с московской биржи
     private SecuritiesInfo loadFromMoex(String secid){
+
+        List<SecuritiesInfo> securities=new ArrayList<>();
+
         // REST запрос к бирже для получения информации о ценных бумагах
         RestTemplate restTemplate = new RestTemplate();
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         String resourceUrl
                 = "http://iss.moex.com/iss/securities.xml?q="+secid;
         ResponseEntity<String> response = null;
+
         try {
             response = restTemplate.getForEntity(resourceUrl, String.class);
         }
@@ -121,10 +121,8 @@ public class SecuritiesXmlImport extends DefaultHandler{
             System.out.println("moex resource is unreachable.");
         }
 
-
-        List<SecuritiesInfo> securities=new ArrayList<>();
-        if(response!=null)
-        if(response.getStatusCode().equals(HttpStatus.OK)) {
+        if((response!=null)&&(response.getStatusCode().equals(HttpStatus.OK)))
+        {
             try(InputStream is = new ByteArrayInputStream(response.getBody().getBytes(StandardCharsets.UTF_8))) {
                 SAXParser parser = parserFactory.newSAXParser();
                 SAXHandler handler = new SAXHandler();
@@ -132,12 +130,6 @@ public class SecuritiesXmlImport extends DefaultHandler{
                 securities=handler.getSecurities().stream()
                         .filter(sec->sec.getSecid().equalsIgnoreCase(secid))
                         .collect(Collectors.toList());
-                System.out.println("Securities data on moex available: ");
-                if(securities.size()>0)
-                    securities.stream().forEach(System.out::println);
-                else
-                    System.out.println("0");
-
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (SAXException e) {

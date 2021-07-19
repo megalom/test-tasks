@@ -18,14 +18,14 @@ import java.util.List;
 public class SecuritiesInfoController {
     @Autowired
     SecuritiesInfoService securitiesInfoService;
-//V
+
     @GetMapping()
     public String index(Model model){
         List<SecuritiesInfo> securitiesInfos= securitiesInfoService.findAll();
         model.addAttribute("securitiesInfos",securitiesInfos);
         return "/securities/index";
     }
-//V
+
     @GetMapping("/{id}")
     public String index(@PathVariable(name="id") int id, Model model){
         SecuritiesInfo securitiesInfo = securitiesInfoService.findById(id);

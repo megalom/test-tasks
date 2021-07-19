@@ -2,6 +2,7 @@ package ru.megalomaniac.securities.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.megalomaniac.securities.exceptions.SecuritiesNotFoundException;
 import ru.megalomaniac.securities.model.TradingHistory;
 import ru.megalomaniac.securities.repository.TradingHistoryRepository;
 
@@ -26,7 +27,7 @@ public class TradingHistoryServiceImpl implements TradingHistoryService{
             tradingHistory = result.get();
         }
         else{
-            throw new RuntimeException("trading history id "+id+" not found");
+            throw new SecuritiesNotFoundException("trading history id "+id+" not found");
         }
         return tradingHistory;
     }
@@ -44,6 +45,16 @@ public class TradingHistoryServiceImpl implements TradingHistoryService{
     @Override
     public List<TradingHistory> findAllFromPage(int limit,int offset) {
         return tradingHistoryRepository.findAllFromPage(limit,offset);
+    }
+
+    @Override
+    public Boolean existsBySecid(String secid) {
+        return tradingHistoryRepository.existsBySecid(secid);
+    }
+
+    @Override
+    public Boolean existById(int id) {
+        return tradingHistoryRepository.existsById(id);
     }
 
     @Override

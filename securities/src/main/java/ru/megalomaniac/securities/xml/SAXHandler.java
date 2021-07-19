@@ -24,8 +24,6 @@ public class SAXHandler extends DefaultHandler {
         UNKNOWN, SECURITIES, HISTORY;
     }
 
-    ;
-
     private DataType dataType = DataType.UNKNOWN;
 
     @Override
@@ -150,6 +148,8 @@ public class SAXHandler extends DefaultHandler {
     public List<String> getErrors(){
         return errors;
     }
+
+
 
     // Приведение типов с проверкой строки и запись ошибок в errors
     private Integer getInteger(String str, String attributeName, int lineNumber) {
